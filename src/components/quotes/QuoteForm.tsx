@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import { Prompt } from 'react-router-dom';
+
 import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
 
 import Card from "../UI/Card";
@@ -6,32 +8,33 @@ import LoadingSpinner from "../UI/LoadingSpinner";
 import classes from "./QuoteForm.module.css";
 
 import { formStateActions } from "../../store/formStateSlice";
-import { isEmpty, isEmptyObj, isValidObj } from "../../functions/validateQuote";
+import { isValidObj } from "../../functions/validateQuote";
 import { FormStatusDef } from "../../models/FormStatusDef";
 
 const QuoteForm = (props: any) => {
-  const dispatch = useDispatch();
+  const [formTouched, setFormTouched] = useState(false);
+
+  const dispatch  = useDispatch();
   const formState = useSelector((state: RootStateOrAny) => state.formState);
 
   const authorInputRef = React.useRef<HTMLInputElement>(null);
-  const textInputRef = React.useRef<HTMLTextAreaElement>(null);
-  const payload: FormStatusDef = {};
+  const textInputRef   = React.useRef<HTMLTextAreaElement>(null);
+
+  const payloadErr: FormStatusDef = {};
+  payloadErr.hasError = true;
+  payloadErr.msgClass = classes.error;
 
   function onBlurHandler(event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (event.target.id.toString() === "author") {
       if (!isValidObj(textInputRef, classes.errorInput, true)) {
-        payload.hasError = true;
-        payload.formMsg  = "Author is required";
-        payload.msgClass = classes.error;
-        dispatch(formStateActions.setFormState({item: payload}));
+        payloadErr.formMsg  = "Author is required";
+        dispatch(formStateActions.setFormState({item: payloadErr}));
       }
     }
     if (event.target.id.toString() === "text") {
       if (!isValidObj(textInputRef, classes.errorInput, true)) {
-        payload.hasError = true;
-        payload.formMsg  = "Text is required";
-        payload.msgClass = classes.error;
-        dispatch(formStateActions.setFormState({item: payload}));
+        payloadErr.formMsg  = "Text is required";
+        dispatch(formStateActions.setFormState({item: payloadErr}));
       }
     }
   }
@@ -42,24 +45,32 @@ const QuoteForm = (props: any) => {
     dispatch(formStateActions.resetFormState());
 
     if (!isValidObj(textInputRef, classes.errorInput, true)) {
-      payload.hasError = true;
-      payload.formMsg  = "Text is required";
-      payload.msgClass = classes.error;
-      dispatch(formStateActions.setFormState({item: payload}));
+      payloadErr.formMsg  = "Text is required";
+      dispatch(formStateActions.setFormState({item: payloadErr}));
     }
     if (!isValidObj(authorInputRef, classes.errorInput, true)) {
-      payload.hasError = true;
-      payload.formMsg  = "Author is required";
-      payload.msgClass = classes.error;
-      dispatch(formStateActions.setFormState({item: payload}));
+      payloadErr.formMsg  = "Author is required";
+      dispatch(formStateActions.setFormState({item: payloadErr}));
     }
 
     props.onAddQuote({ author: authorInputRef.current?.value || "", text: textInputRef.current?.value || "" });
   }
 
+  const formLeaveHandler= (event: React.MouseEvent<HTMLElement>) => {
+    console.log("QuoteForm.formLeaveHandler");
+    setFormTouched(false);
+  };
+
+  const formFocusHandler= (event: React.FocusEvent<HTMLFormElement>) => {
+    console.log("QuoteForm.formFocusHandler");
+    setFormTouched(true);
+  };
+
   return (
+    <Fragment>
+      <Prompt when={formTouched} message={(location) => "Are you sure?"} />
     <Card>
-      <form className={classes.form} onSubmit={submitFormHandler}>
+      <form className={classes.form} onFocus={formFocusHandler} onSubmit={submitFormHandler}>
         {props.isLoading && (
           <div className={classes.loading}>
             <LoadingSpinner />
@@ -88,10 +99,11 @@ const QuoteForm = (props: any) => {
           <label className={`${classes.message} ${formState.msgClass}`}>
             {formState.formMsg}
           </label>
-          <button className="btn">Add Quote</button>
+          <button onClick={formLeaveHandler} className="btn">Add Quote</button>
         </div>
       </form>
     </Card>
+    </Fragment>
   );
 };
 

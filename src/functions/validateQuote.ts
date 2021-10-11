@@ -39,3 +39,20 @@ export function isValidObj(
     inpRef.current.className = "";
     return true;
 }
+
+// export function isValidForm(
+//     inpRefArray: React.Ref<HTMLInputElement|HTMLTextAreaElement>[], 
+//     errClass?: string,
+//     setFocus?: boolean,
+//     ): Boolean {
+//     if (inpRef === null || inpRef.current === null) {
+//         return false;
+//     }
+//     if (inpRef.current.value.trim() === '') {
+//         inpRef.current.className = errClass;
+//         { setFocus && inpRef.current.focus(); }
+//         return false;
+//     }
+//     inpRef.current.className = "";
+//     return true;
+// }

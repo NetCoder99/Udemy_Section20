@@ -1,6 +1,8 @@
 import classes from './QuoteItem.module.css';
+import { Link } from 'react-router-dom';
+import { QuoteDataDef } from '../../models/QuoteDataDef';
 
-const QuoteItem = (props) => {
+const QuoteItem = (props: QuoteDataDef) => {
   return (
     <li className={classes.item}>
       <figure>
@@ -9,7 +11,7 @@ const QuoteItem = (props) => {
         </blockquote>
         <figcaption>{props.author}</figcaption>
       </figure>
-      <button className='btn'>View Fullscreen</button>
+      <Link className='btn' to={"/quotes/"+props.id} >View Fullscreen</Link>
     </li>
   );
 };

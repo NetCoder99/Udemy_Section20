@@ -1,6 +1,7 @@
+import { QuoteDataDef } from '../../models/QuoteDataDef';
 import classes from './HighlightedQuote.module.css';
 
-const HighlightedQuote = (props) => {
+const HighlightedQuote = (props: QuoteDataDef) => {
   return (
     <figure className={classes.quote}>
       <p>{props.text}</p>
