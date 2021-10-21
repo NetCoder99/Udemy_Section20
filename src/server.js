@@ -1,6 +1,6 @@
 import { createServer, Model } from "miragejs";
-import QuoteDataDef from "./models/QuoteDataDef";
 
+const FIREBASE_DOMAIN = 'https://127.0.0.1';
 
 export function makeServer({ environment = "dev" } = {}) {
   console.log("makeServer");
@@ -54,10 +54,26 @@ export function makeServer({ environment = "dev" } = {}) {
         return schema.products.all;
       });
       this.timing = 200;
-      this.get("http://localhost:8081/getQuotes", (schema) => {
-        console.log("makeServer.getProducts");
-        return schema.quotes.all;
+      this.get(FIREBASE_DOMAIN + "/quotes", (schema) => {
+        console.log("makeServer.getAllQuotes");
+        var data = schema.db.quotes;
+        return data;
       });
+      this.timing = 200;
+      this.post(FIREBASE_DOMAIN + "/quotes", (schema, request) => {
+        console.log("makeServer.addQuotes");
+        let attrs = JSON.parse(request.requestBody)
+        var data = schema.quotes.create(attrs);
+        return data;
+      });
+      //`${FIREBASE_DOMAIN}/quotes/${quoteId}.json`
+      this.timing = 200;
+      this.get(FIREBASE_DOMAIN + "/quotes/:quoteId", (schema, request) => {
+        const quoteId = request.params.quoteId;
+        var data = schema.db.quotes.find(quoteId);
+        return data;
+      });
+
     },
   });
 

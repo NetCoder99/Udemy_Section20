@@ -1,6 +1,6 @@
-.form {
+/* .form {
   position: relative;
-}
+} */
 
 .loading {
   position: absolute;
@@ -62,7 +62,7 @@
 }
 
 .error {
-  color: rgb(243, 116, 116)
+  color: rgb(243, 101, 101)
 }
 
 .message {

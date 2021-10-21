@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-
-import { formStateSlice } from "./formStateSlice";
+import { apiSlice } from './apiSlice';
+import { formSlice } from "./formSlice";
 
 const reducerMap = {
-  formState: formStateSlice.reducer,
+  formState: formSlice.reducer,
+  apiSlice:  apiSlice.reducer,
 };
 
 const reduxStore = configureStore({reducer: reducerMap});
