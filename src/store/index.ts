@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from './apiSlice';
+//import { errorSlice } from './errorSlice';
 import { formSlice } from "./formSlice";
 
 const reducerMap = {

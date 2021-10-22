@@ -9,6 +9,7 @@ import { formActions } from "../../../store/formSlice";
 export const QuoteAuthor = (props: any) => {
   const fieldId = 'quoteAuthor';
   const fieldSeq = 1;
+  const errMessage = "Author name must not be blank.";
 
   const authorRef = React.useRef<HTMLInputElement>(null);
   const [fieldState, setFieldState] = useState({ class: "" });
@@ -16,9 +17,16 @@ export const QuoteAuthor = (props: any) => {
 
   function onBlurHandler(event: React.FocusEvent<HTMLInputElement>) {
     console.log("QuoteAuthor.onBlurHandler");
+    dispatch(
+      formActions.setFieldValue({
+        fieldName: fieldId,
+        fieldValue: event.currentTarget.value,
+        fieldSeq: fieldSeq,
+      })
+    );     
     if (isEmpty(event.currentTarget.value)) {
       setFieldState({ class: classes.error });
-      dispatch(formActions.addErrorField({fieldName:fieldId, errMessage: "Author name must not be blank.", fieldSeq: fieldSeq}));
+      dispatch(formActions.addErrorField({fieldName:fieldId, fieldValue: event.currentTarget.value, errMessage: errMessage, fieldSeq: fieldSeq}));
     } else {
       setFieldState({ class: "" });
       dispatch(formActions.delErrorField({fieldName:fieldId}));

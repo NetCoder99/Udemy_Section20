@@ -25,8 +25,35 @@
     background-color: #cbf8f8;
     outline-color: teal;
   }
+
+  .message {
+    font-size: 1.1rem;
+    margin: auto 1rem auto 0rem;
+    font-weight: bold;
+  }
+
+  .success {
+    color: rgb(3, 128, 86);
+    font-weight: bold;
+  }
   
+  .invalid {
+    color: rgb(243, 101, 101);
+    font-weight: bold;
+  }
   .error {
     background-color: rgb(231, 190, 190) !important;
   }
   
+  .actions {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .actions button {
+    font-size: 1rem;
+  }
+  
+  .actions button:disabled {
+    background-color: lightgray;
+  }

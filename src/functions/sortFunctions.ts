@@ -1,5 +1,5 @@
 import { QuoteDataDef } from "../models/QuoteDataDef";
-import { fieldErr} from '../store/formSlice';
+import { fieldItem} from '../store/formSlice';
 
 export const sortQuotes = (quotes: QuoteDataDef[], ascending: boolean) => {
     return quotes.sort((quoteA, quoteB) => {
@@ -11,7 +11,7 @@ export const sortQuotes = (quotes: QuoteDataDef[], ascending: boolean) => {
     });
   };
 
-  export const sortErrors = (errors: fieldErr[], ascending?: boolean) => {
+  export const sortErrors = (errors: fieldItem[], ascending?: boolean) => {
     return errors.sort((errorA, errorB) => {
       if (ascending) {
         return errorA.fieldSeq > errorB.fieldSeq ? 1 : -1;

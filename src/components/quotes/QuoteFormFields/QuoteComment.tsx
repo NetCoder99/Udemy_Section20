@@ -7,6 +7,7 @@ import classes from './QuoteField.module.css';
 export const QuoteComment = (props: any) => {
   const fieldId = 'quoteComment';
   const fieldSeq = 3;
+  const errMessage = "Comment text must not be blank.";
 
   const quoteTextRef = React.useRef<HTMLTextAreaElement>(null);
   const [fieldState, setFieldState] = useState({ class: "" });
@@ -14,9 +15,16 @@ export const QuoteComment = (props: any) => {
 
   function onBlurHandler(event: React.FocusEvent<HTMLTextAreaElement>) {
     console.log("QuoteComment.onBlurHandler");
+    dispatch(
+      formActions.setFieldValue({
+        fieldName: fieldId,
+        fieldValue: event.currentTarget.value,
+        fieldSeq: fieldSeq,
+      })
+    );    
     if (isEmpty(event.currentTarget.value)) {
       setFieldState({ class: classes.error });
-      dispatch(formActions.addErrorField({fieldName:fieldId, errMessage: "Comment text must not be blank.", fieldSeq:fieldSeq}));
+      dispatch(formActions.addErrorField({fieldName:fieldId, fieldValue: event.currentTarget.value, errMessage: errMessage, fieldSeq:fieldSeq}));
     } else {
       setFieldState({ class: "" });
       dispatch(formActions.delErrorField({fieldName:fieldId}));

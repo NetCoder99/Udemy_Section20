@@ -10,7 +10,7 @@ const AllQuotes = () => {
   useEffect(() => {
     sendRequest(null);
     console.log("AllQuotes.status:");
-  }, [sendRequest]);
+  }, []);
 
   return (
     <section>

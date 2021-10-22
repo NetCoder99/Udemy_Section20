@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { isEmpty } from "../../../functions/validateQuote";
 import { formActions } from "../../../store/formSlice";
-import classes from './QuoteField.module.css';
+import classes from "./QuoteField.module.css";
 
 export const QuoteTextArea = (props: any) => {
-  const fieldId = 'quoteText';
+  const fieldId = "quoteText";
   const fieldSeq = 2;
+  const errMessage = "Quote text must not be blank.";
 
   const quoteTextRef = React.useRef<HTMLTextAreaElement>(null);
   const [fieldState, setFieldState] = useState({ class: "" });
@@ -14,12 +15,26 @@ export const QuoteTextArea = (props: any) => {
 
   function onBlurHandler(event: React.FocusEvent<HTMLTextAreaElement>) {
     console.log("QuoteTextArea.onBlurHandler");
+    dispatch(
+      formActions.setFieldValue({
+        fieldName: fieldId,
+        fieldValue: event.currentTarget.value,
+        fieldSeq: fieldSeq,
+      })
+    );
     if (isEmpty(event.currentTarget.value)) {
       setFieldState({ class: classes.error });
-      dispatch(formActions.addErrorField({fieldName:fieldId, errMessage: "Quote text must not be blank.", fieldSeq:fieldSeq}));
+      dispatch(
+        formActions.addErrorField({
+          fieldName: fieldId,
+          fieldValue: event.currentTarget.value,
+          errMessage: errMessage,
+          fieldSeq: fieldSeq,
+        })
+      );
     } else {
       setFieldState({ class: "" });
-      dispatch(formActions.delErrorField({fieldName:fieldId}));
+      dispatch(formActions.delErrorField({ fieldName: fieldId }));
     }
   }
 
@@ -36,4 +51,3 @@ export const QuoteTextArea = (props: any) => {
     </div>
   );
 };
-
