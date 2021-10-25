@@ -4,14 +4,22 @@ import classes from "./QuoteField.module.css";
 import { useDispatch } from "react-redux";
 
 import { isEmpty } from "../../../functions/validateQuote";
-import { formActions } from "../../../store/formSlice";
+import { fieldItem, formActions } from "../../../store/formSlice";
+
+
+// export interface fieldItem {
+//   fieldSeq: number;
+//   fieldName: string;
+//   fieldValue: string;
+//   errMessage?: string | '';
+// }
+
+export const fieldSeq   = 1;
+export const fieldName  = 'quoteAuthor';
+export const errMessage = "Author name must not be blank.";
 
 export const QuoteAuthor = (props: any) => {
-  const fieldId = 'quoteAuthor';
-  const fieldSeq = 1;
-  const errMessage = "Author name must not be blank.";
-
-  const authorRef = React.useRef<HTMLInputElement>(null);
+  const authorRef  = React.useRef<HTMLInputElement>(null);
   const [fieldState, setFieldState] = useState({ class: "" });
   const dispatch = useDispatch();
 
@@ -19,26 +27,27 @@ export const QuoteAuthor = (props: any) => {
     console.log("QuoteAuthor.onBlurHandler");
     dispatch(
       formActions.setFieldValue({
-        fieldName: fieldId,
+        fieldName: fieldName,
         fieldValue: event.currentTarget.value,
         fieldSeq: fieldSeq,
       })
     );     
+
     if (isEmpty(event.currentTarget.value)) {
       setFieldState({ class: classes.error });
-      dispatch(formActions.addErrorField({fieldName:fieldId, fieldValue: event.currentTarget.value, errMessage: errMessage, fieldSeq: fieldSeq}));
+      dispatch(formActions.addErrorField({fieldName:fieldName, fieldValue: event.currentTarget.value, errMessage: errMessage, fieldSeq: fieldSeq}));
     } else {
       setFieldState({ class: "" });
-      dispatch(formActions.delErrorField({fieldName:fieldId}));
+      dispatch(formActions.delErrorField({fieldName:fieldName}));
     }
   }
 
   return (
     <div className={classes.control}>
-      <label htmlFor={fieldId}>Author</label>
+      <label htmlFor={fieldName}>Author</label>
       <input
         type="text"
-        id={fieldId}
+        id={fieldName}
         className={fieldState.class}
         ref={authorRef}
         onBlur={onBlurHandler}

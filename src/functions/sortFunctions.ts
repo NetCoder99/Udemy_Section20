@@ -11,12 +11,12 @@ export const sortQuotes = (quotes: QuoteDataDef[], ascending: boolean) => {
     });
   };
 
-  export const sortErrors = (errors: fieldItem[], ascending?: boolean) => {
-    return errors.sort((errorA, errorB) => {
+  export const sortFields = (fields: fieldItem[], ascending?: boolean) => {
+    return fields.sort((field1, field2) => {
       if (ascending) {
-        return errorA.fieldSeq > errorB.fieldSeq ? 1 : -1;
+        return field1.fieldSeq > field2.fieldSeq ? 1 : -1;
       } else {
-        return errorA.fieldSeq < errorB.fieldSeq ? 1 : -1;
+        return field1.fieldSeq < field2.fieldSeq ? 1 : -1;
       }
     });
   };  

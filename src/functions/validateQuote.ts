@@ -6,10 +6,7 @@ export function isEmpty(inpValue: string): Boolean {
 }
 
 export function isValid(inpValue: string, regex: string = ''): Boolean {
-    if (regex) {
-        //test using regex 
-    }
-    return inpValue.trim() === '';
+  return inpValue.trim() === '';
 }
 
 // export function isEmptyObj(

@@ -7,8 +7,8 @@ import QuoteItem from './QuoteItem';
 import classes   from './QuoteList.module.css';
 
 const QuoteList = (props: {quotes: QuoteDataDef[]}) => {
-  const history  = useHistory()
-  const location = useLocation();
+  const history     = useHistory()
+  const location    = useLocation();
   const queryPArams = new URLSearchParams(location.search);
   const isSortedAsc = queryPArams.get('sort') === 'asc' ? true : false;
 

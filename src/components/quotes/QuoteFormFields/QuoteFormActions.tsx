@@ -7,27 +7,12 @@ import useHttps from "../../../hooks/useHttps";
 import { addQuote } from "../../../lib/api";
 import { fieldItem } from "../../../store/formSlice";
 import { QuoteDataDef } from "../../../models/QuoteDataDef";
-
-function hasError(element: fieldItem) {return !isEmpty(element.errMessage);}
-function getFirstError(fieldProps: Array<fieldItem>) {
-  const errors = fieldProps.filter(hasError);
-  if (errors.length > 0) { return errors[0].errMessage;}
-  else { return '';}
-}
-function getFirstValue(fieldProps: Array<fieldItem>) {
-  const values = fieldProps.filter((element: fieldItem)  => !isEmpty(element.fieldValue));
-  if (values.length > 0) { return values[0].fieldValue;}
-  else { return '';}
-}
-function getFieldValue(fieldProps: Array<fieldItem>, inpName: string) {
-  const values = fieldProps.filter((element: fieldItem)  => element.fieldName === inpName);
-  if (values.length > 0) { return values[0].fieldValue;}
-  else { return '';}
-}
+import { getFirstError, getFirstValue, getFieldValue } from "../../../functions/fieldFunctions";
 
 export const QuoteFormActions = (props: any) => {
   console.log("QuoteFormActions.init");
   const {sendRequest} = useHttps(addQuote);
+
   const formState     = useSelector((state: RootStateOrAny) => state.formState);
   const errMsg        = getFirstError(formState.fieldProps);
   const [wasTouched, setWasTouched] = useState(false);
@@ -42,11 +27,19 @@ export const QuoteFormActions = (props: any) => {
   function submitFormHandler(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     console.log("QuoteFormActions.submitFormHandler");
+
+    const author  = getFieldValue(formState.fieldProps, 'quoteAuthor');
+    const text    = getFieldValue(formState.fieldProps, 'quoteText');
+    const comment = getFieldValue(formState.fieldProps, 'quoteComment');
+
+    //if (!validateAllFields(formState.fieldProps) ) {
+    //}
+
     if (!getFirstError(formState.fieldProps)) {
       const quoteData: QuoteDataDef = {
         id: "q9",
         author: getFieldValue(formState.fieldProps, 'quoteAuthor'),
-        text: getFieldValue(formState.fieldProps, 'quoteText'),
+        text:   getFieldValue(formState.fieldProps, 'quoteText'),
       }
       sendRequest(quoteData);
     };
